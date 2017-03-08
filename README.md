@@ -113,6 +113,7 @@ public class DemoUI2 extends UI {
     layout.addComponent(button);
 
     tour.addStep(new StepBuilder()
+                     .withAttachTo(button)
                      .withTitle("Step 1: title")
                      .withText("Step text")
                      .addButton(new StepButton("Back", TourActions::back))
@@ -120,6 +121,7 @@ public class DemoUI2 extends UI {
                      .build());
 
     tour.addStep(new StepBuilder()
+                     .withAttachTo(button)
                      .withTitle("Step 2: title")
                      .withText("Step text")
                      .addButton(new StepButton("Back", TourActions::back))
