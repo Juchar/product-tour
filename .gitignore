@@ -6,6 +6,5 @@
 *.ear
 
 # IntelliJ
-/out/
-/**/*.iml
-.idea/**/*.*
+**/*.iml
+.idea/
