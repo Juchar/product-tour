@@ -7,14 +7,17 @@
 
 # IntelliJ
 /out/
-.idea/**/libraries
-
-# User-specific stuff:
+**/+.iml
 .idea/**/workspace.xml
 .idea/**/tasks.xml
-.idea/dictionaries
-
-# Sensitive or high-churn files:
+.idea/**/dictionaries
+.idea/**/copyright
+.idea/**/.name
+.idea/**/sonarlint
+.idea/**/libraries
+.idea/**/deployment.xml
+.idea/**/encodings.xml
+.idea/**/misc.xml
 .idea/**/dataSources/
 .idea/**/dataSources.ids
 .idea/**/dataSources.xml
