@@ -8,3 +8,7 @@
 # IntelliJ
 **/*.iml
 .idea/
+
+# Maven
+**/target
+**/webapp/VAADIN/**/styles.css
