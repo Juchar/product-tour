@@ -27,16 +27,19 @@ public class Tour extends AbstractExtension {
   private final TourServerRpc serverRpc = new TourServerRpc() {
     @Override
     public void onCancel() {
+      getState().currentStep = null;
       fireEvent(new TourCancelListener.CancelEvent(Tour.this));
     }
 
     @Override
     public void onComplete() {
+      getState().currentStep = null;
       fireEvent(new TourCompleteListener.CompleteEvent(Tour.this));
     }
 
     @Override
     public void onHide() {
+      getState().currentStep = null;
       fireEvent(new TourHideListener.HideEvent(Tour.this));
     }
 
