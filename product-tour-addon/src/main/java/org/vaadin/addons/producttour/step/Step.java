@@ -3,10 +3,10 @@ package org.vaadin.addons.producttour.step;
 import com.vaadin.server.AbstractExtension;
 import com.vaadin.server.SizeWithUnit;
 import com.vaadin.server.Sizeable;
-import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.AbstractComponent;
 
 import org.vaadin.addons.producttour.button.StepButton;
+import org.vaadin.addons.producttour.shared.step.ContentMode;
 import org.vaadin.addons.producttour.shared.step.StepAnchor;
 import org.vaadin.addons.producttour.shared.step.StepClientRpc;
 import org.vaadin.addons.producttour.shared.step.StepServerRpc;
@@ -28,7 +28,6 @@ public class Step extends AbstractExtension implements Sizeable {
   private static final StepAnchor DEFAULT_ANCHOR = StepAnchor.RIGHT;
 
   private final List<StepButton> buttons;
-  private final StepClientRpc clientRpc;
   private final StepServerRpc serverRpc = new StepServerRpc() {
     @Override
     public void onCancel() {
@@ -104,7 +103,6 @@ public class Step extends AbstractExtension implements Sizeable {
    */
   public Step(String id, AbstractComponent attachTo, StepAnchor anchor) {
     this.buttons = new LinkedList<>();
-    this.clientRpc = getRpcProxy(StepClientRpc.class);
     registerRpc(serverRpc);
 
     setId(id);
@@ -547,35 +545,35 @@ public class Step extends AbstractExtension implements Sizeable {
    * Hide this step and trigger the cancel provider.
    */
   public void cancel() {
-    clientRpc.cancel();
+    getRpcProxy(StepClientRpc.class).cancel();
   }
 
   /**
    * Hide this ste and trigger the complete provider.
    */
   public void complete() {
-    clientRpc.complete();
+    getRpcProxy(StepClientRpc.class).complete();
   }
 
   /**
    * Hide this step.
    */
   public void hide() {
-    clientRpc.hide();
+    getRpcProxy(StepClientRpc.class).hide();
   }
 
   /**
    * Show this step.
    */
   public void show() {
-    clientRpc.show();
+    getRpcProxy(StepClientRpc.class).show();
   }
 
   /**
    * Scroll to this steps element.
    */
   public void scrollTo() {
-    clientRpc.scrollTo();
+    getRpcProxy(StepClientRpc.class).scrollTo();
   }
 
   /**
@@ -660,5 +658,4 @@ public class Step extends AbstractExtension implements Sizeable {
   public void removeShowListener(StepShowListener listener) {
     removeListener(StepShowListener.ShowEvent.class, listener, StepShowListener.SHOW_METHOD);
   }
-
 }

@@ -1,10 +1,10 @@
 package org.vaadin.addons.producttour.step;
 
 import com.vaadin.server.Sizeable;
-import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.AbstractComponent;
 
 import org.vaadin.addons.producttour.button.StepButton;
+import org.vaadin.addons.producttour.shared.step.ContentMode;
 import org.vaadin.addons.producttour.shared.step.StepAnchor;
 
 /**

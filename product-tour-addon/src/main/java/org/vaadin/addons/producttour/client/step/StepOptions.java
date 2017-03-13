@@ -69,25 +69,33 @@ public class StepOptions extends JavaScriptObject {
 
   public final native void setShowListener(Command command) /*-{
     this.when.show = function () {
-      command.@org.vaadin.addons.producttour.client.util.Command::execute()();
+      $entry(function () {
+        command.@org.vaadin.addons.producttour.client.util.Command::execute()()
+      })();
     }
   }-*/;
 
   public native final void setCancelListener(Command command) /*-{
     this.when.cancel = function () {
-      command.@org.vaadin.addons.producttour.client.util.Command::execute()();
+      $entry(function () {
+        command.@org.vaadin.addons.producttour.client.util.Command::execute()()
+      })();
     }
   }-*/;
 
   public native final void setCompleteListener(Command command) /*-{
     this.when.complete = function () {
-      command.@org.vaadin.addons.producttour.client.util.Command::execute()();
+      $entry(function () {
+        command.@org.vaadin.addons.producttour.client.util.Command::execute()()
+      })();
     }
   }-*/;
 
   public native final void setHideListener(Command command) /*-{
     this.when.hide = function () {
-      command.@org.vaadin.addons.producttour.client.util.Command::execute()();
+      $entry(function () {
+        command.@org.vaadin.addons.producttour.client.util.Command::execute()()
+      })();
     }
   }-*/;
 }

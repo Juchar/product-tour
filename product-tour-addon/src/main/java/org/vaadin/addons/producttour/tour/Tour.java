@@ -23,20 +23,22 @@ import java.util.Objects;
 public class Tour extends AbstractExtension {
 
   private final List<Step> steps;
-  private final TourClientRpc clientRpc;
   private final TourServerRpc serverRpc = new TourServerRpc() {
     @Override
     public void onCancel() {
+      getState().currentStep = null;
       fireEvent(new TourCancelListener.CancelEvent(Tour.this));
     }
 
     @Override
     public void onComplete() {
+      getState().currentStep = null;
       fireEvent(new TourCompleteListener.CompleteEvent(Tour.this));
     }
 
     @Override
     public void onHide() {
+      getState().currentStep = null;
       fireEvent(new TourHideListener.HideEvent(Tour.this));
     }
 
@@ -61,7 +63,6 @@ public class Tour extends AbstractExtension {
    */
   public Tour() {
     this.steps = new LinkedList<>();
-    this.clientRpc = getRpcProxy(TourClientRpc.class);
     registerRpc(serverRpc);
 
     extend(UI.getCurrent());
@@ -157,14 +158,14 @@ public class Tour extends AbstractExtension {
    * tour will be triggered.
    */
   public void cancel() {
-    clientRpc.cancel();
+    getRpcProxy(TourClientRpc.class).cancel();
   }
 
   /**
    * Hide the current step. The hide provider for the tour will be triggered.
    */
   public void hide() {
-    clientRpc.hide();
+    getRpcProxy(TourClientRpc.class).hide();
   }
 
   /**
@@ -174,7 +175,7 @@ public class Tour extends AbstractExtension {
    *     The id of the step to show
    */
   public void show(String stepId) {
-    clientRpc.show(stepId);
+    getRpcProxy(TourClientRpc.class).show(stepId);
   }
 
   /**
@@ -197,21 +198,21 @@ public class Tour extends AbstractExtension {
    * Show the first step and begin the tour. The start provider of the tour will be triggered.
    */
   public void start() {
-    clientRpc.start();
+    getRpcProxy(TourClientRpc.class).start();
   }
 
   /**
    * Show the previous step in the order they were added.
    */
   public void back() {
-    clientRpc.back();
+    getRpcProxy(TourClientRpc.class).back();
   }
 
   /**
    * Show the next step in the order they were added.
    */
   public void next() {
-    clientRpc.next();
+    getRpcProxy(TourClientRpc.class).next();
   }
 
   /**
@@ -302,5 +303,4 @@ public class Tour extends AbstractExtension {
     removeListener(TourStartListener.StartEvent.class, listener,
                    TourStartListener.TOUR_STARTED_METHOD);
   }
-
 }

@@ -13,11 +13,9 @@ import org.vaadin.addons.producttour.shared.button.StepButtonState;
 @Connect(StepButton.class)
 public class StepButtonConnector extends AbstractExtensionConnector {
 
-  private StepButtonServerRpc rpcProxy;
-
   @Override
   protected void extend(ServerConnector target) {
-    rpcProxy = getRpcProxy(StepButtonServerRpc.class);
+    // Nothing to do here
   }
 
   public StepButtonOptions getOptions() {
@@ -28,7 +26,7 @@ public class StepButtonConnector extends AbstractExtensionConnector {
     options.setClickListener(new MouseEventDetailsConsumer() {
       @Override
       public void accept(MouseEventDetails mouseEventDetails) {
-        rpcProxy.onClick(mouseEventDetails);
+        getRpcProxy(StepButtonServerRpc.class).onClick(mouseEventDetails);
       }
     });
     return options;
