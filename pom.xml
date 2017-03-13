@@ -4,7 +4,7 @@
   <groupId>org.vaadin.addons</groupId>
   <artifactId>product-tour-root</artifactId>
   <packaging>pom</packaging>
-  <version>0.2</version>
+  <version>0.3-SNAPSHOT</version>
   <name>Product Tour Add-on Root Project</name>
 
   <prerequisites>
@@ -27,7 +27,7 @@
     <connection>scm:git:http://github.com/Juchar/product-tour.git</connection>
     <developerConnection>scm:git:http://git@github.com:/Juchar/product-tour.git
     </developerConnection>
-    <tag>product-tour-0.2</tag>
+    <tag>Product Tour add-on for Vaadin</tag>
   </scm>
 
   <issueManagement>
