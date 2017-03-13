@@ -3,10 +3,10 @@ package org.vaadin.addons.producttour.step;
 import com.vaadin.server.AbstractExtension;
 import com.vaadin.server.SizeWithUnit;
 import com.vaadin.server.Sizeable;
-import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.AbstractComponent;
 
 import org.vaadin.addons.producttour.button.StepButton;
+import org.vaadin.addons.producttour.shared.step.ContentMode;
 import org.vaadin.addons.producttour.shared.step.StepAnchor;
 import org.vaadin.addons.producttour.shared.step.StepClientRpc;
 import org.vaadin.addons.producttour.shared.step.StepServerRpc;
@@ -660,5 +660,4 @@ public class Step extends AbstractExtension implements Sizeable {
   public void removeShowListener(StepShowListener listener) {
     removeListener(StepShowListener.ShowEvent.class, listener, StepShowListener.SHOW_METHOD);
   }
-
 }

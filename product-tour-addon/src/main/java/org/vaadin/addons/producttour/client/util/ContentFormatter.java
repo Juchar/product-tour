@@ -3,7 +3,8 @@ package org.vaadin.addons.producttour.client.util;
 import com.google.gwt.dom.client.PreElement;
 
 import com.vaadin.client.WidgetUtil;
-import com.vaadin.shared.ui.label.ContentMode;
+
+import org.vaadin.addons.producttour.shared.step.ContentMode;
 
 public final class ContentFormatter {
 
@@ -16,8 +17,6 @@ public final class ContentFormatter {
       case TEXT:
         return WidgetUtil.escapeHTML(text);
       case HTML:
-      case RAW:
-      case XML:
         return text;
       default:
         return "";
