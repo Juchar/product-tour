@@ -3,6 +3,7 @@ package org.vaadin.addons.producttour.step;
 import com.vaadin.server.AbstractExtension;
 import com.vaadin.server.SizeWithUnit;
 import com.vaadin.server.Sizeable;
+import com.vaadin.shared.Registration;
 import com.vaadin.ui.AbstractComponent;
 
 import org.vaadin.addons.producttour.button.StepButton;
@@ -581,20 +582,12 @@ public class Step extends AbstractExtension implements Sizeable {
    *
    * @param listener
    *     The listener to be added
-   */
-  public void addCancelListener(StepCancelListener listener) {
-    addListener(StepCancelListener.CancelEvent.class, listener, StepCancelListener.CANCEL_METHOD);
-  }
-
-  /**
-   * Remove the given listener from the step.
    *
-   * @param listener
-   *     The listener to be removed.
+   * @return A {@link Registration} object to be able to remove the listener
    */
-  public void removeCancelListener(StepCancelListener listener) {
-    removeListener(StepCancelListener.CancelEvent.class, listener,
-                   StepCancelListener.CANCEL_METHOD);
+  public Registration addCancelListener(StepCancelListener listener) {
+    return addListener(StepCancelListener.CancelEvent.class, listener,
+                       StepCancelListener.CANCEL_METHOD);
   }
 
   /**
@@ -602,21 +595,12 @@ public class Step extends AbstractExtension implements Sizeable {
    *
    * @param listener
    *     The listener to be added
-   */
-  public void addCompleteListener(StepCompleteListener listener) {
-    addListener(StepCompleteListener.CompleteEvent.class, listener,
-                StepCompleteListener.COMPLETE_METHOD);
-  }
-
-  /**
-   * Remove the given listener from the step.
    *
-   * @param listener
-   *     The listener to be removed.
+   * @return A {@link Registration} object to be able to remove the listener
    */
-  public void removeCompleteListener(StepCompleteListener listener) {
-    removeListener(StepCompleteListener.CompleteEvent.class, listener,
-                   StepCompleteListener.COMPLETE_METHOD);
+  public Registration addCompleteListener(StepCompleteListener listener) {
+    return addListener(StepCompleteListener.CompleteEvent.class, listener,
+                       StepCompleteListener.COMPLETE_METHOD);
   }
 
   /**
@@ -624,19 +608,11 @@ public class Step extends AbstractExtension implements Sizeable {
    *
    * @param listener
    *     The listener to be added
-   */
-  public void addHideListener(StepHideListener listener) {
-    addListener(StepHideListener.HideEvent.class, listener, StepHideListener.HIDE_METHOD);
-  }
-
-  /**
-   * Remove the given listener from the step.
    *
-   * @param listener
-   *     The listener to be removed.
+   * @return A {@link Registration} object to be able to remove the listener
    */
-  public void removeHideListener(StepHideListener listener) {
-    removeListener(StepHideListener.HideEvent.class, listener, StepHideListener.HIDE_METHOD);
+  public Registration addHideListener(StepHideListener listener) {
+    return addListener(StepHideListener.HideEvent.class, listener, StepHideListener.HIDE_METHOD);
   }
 
   /**
@@ -644,18 +620,10 @@ public class Step extends AbstractExtension implements Sizeable {
    *
    * @param listener
    *     The listener to be added
-   */
-  public void addShowListener(StepShowListener listener) {
-    addListener(StepShowListener.ShowEvent.class, listener, StepShowListener.SHOW_METHOD);
-  }
-
-  /**
-   * Remove the given listener from the step.
    *
-   * @param listener
-   *     The listener to be removed.
+   * @return A {@link Registration} object to be able to remove the listener
    */
-  public void removeShowListener(StepShowListener listener) {
-    removeListener(StepShowListener.ShowEvent.class, listener, StepShowListener.SHOW_METHOD);
+  public Registration addShowListener(StepShowListener listener) {
+    return addListener(StepShowListener.ShowEvent.class, listener, StepShowListener.SHOW_METHOD);
   }
 }

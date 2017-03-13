@@ -2,6 +2,7 @@ package org.vaadin.addons.producttour.button;
 
 import com.vaadin.server.AbstractExtension;
 import com.vaadin.shared.MouseEventDetails;
+import com.vaadin.shared.Registration;
 import com.vaadin.ui.AbstractComponent;
 
 import org.vaadin.addons.producttour.shared.button.StepButtonServerRpc;
@@ -78,10 +79,12 @@ public class StepButton extends AbstractExtension {
    *
    * @param listener
    *     The listener to be added
+   *
+   * @return A {@link Registration} object to be able to remove the listener
    */
-  public void addClickListener(StepButtonClickListener listener) {
-    addListener(StepButtonClickListener.ClickEvent.class, listener,
-                StepButtonClickListener.CLICK_METHOD);
+  public Registration addClickListener(StepButtonClickListener listener) {
+    return addListener(StepButtonClickListener.ClickEvent.class, listener,
+                       StepButtonClickListener.CLICK_METHOD);
   }
 
   @Override
@@ -104,17 +107,6 @@ public class StepButton extends AbstractExtension {
    */
   public StepButton(String caption, StepButtonClickListener clickListener) {
     this(caption, "", clickListener);
-  }
-
-  /**
-   * Remove the given click listener from the button.
-   *
-   * @param listener
-   *     The listener to be removed
-   */
-  public void removeClickListener(StepButtonClickListener listener) {
-    removeListener(StepButtonClickListener.ClickEvent.class, listener,
-                   StepButtonClickListener.CLICK_METHOD);
   }
 
   /**

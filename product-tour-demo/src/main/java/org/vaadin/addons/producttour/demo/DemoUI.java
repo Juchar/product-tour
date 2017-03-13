@@ -79,12 +79,10 @@ public class DemoUI extends UI {
   private ComboBox getThemeChooserComboBox() {
     List<String> themeList = Arrays.asList("Blueprint", "Dark", "Default", "Facebook", "Flat",
                                            "Flat-Dark", "Light", "Metro");
-    ComboBox themeChooser = new ComboBox("Choose theme", themeList);
+    ComboBox<String> themeChooser = new ComboBox<>("Choose theme", themeList);
     themeChooser.setWidth(200, Unit.PIXELS);
-    themeChooser.setNullSelectionAllowed(false);
     themeChooser.setValue("Default");
-    themeChooser.addValueChangeListener(
-        e -> setTheme(((String) e.getProperty().getValue()).toLowerCase()));
+    themeChooser.addValueChangeListener(e -> setTheme(e.getValue().toLowerCase()));
     return themeChooser;
   }
 
