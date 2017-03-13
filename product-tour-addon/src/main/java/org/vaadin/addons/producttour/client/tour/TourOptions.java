@@ -20,33 +20,43 @@ public class TourOptions extends JavaScriptObject {
 
   public final native void setCancelListener(Command command) /*-{
     this.when.cancel = function () {
-      command.@org.vaadin.addons.producttour.client.util.Command::execute()();
+      $entry(function () {
+        command.@org.vaadin.addons.producttour.client.util.Command::execute()()
+      })();
     }
   }-*/;
 
   public final native void setCompleteListener(Command command) /*-{
     this.when.complete = function () {
-      command.@org.vaadin.addons.producttour.client.util.Command::execute()();
+      $entry(function () {
+        command.@org.vaadin.addons.producttour.client.util.Command::execute()()
+      })();
     }
   }-*/;
 
   public final native void setHideListener(Command command) /*-{
     this.when.hide = function () {
-      command.@org.vaadin.addons.producttour.client.util.Command::execute()();
+      $entry(function () {
+        command.@org.vaadin.addons.producttour.client.util.Command::execute()()
+      })();
     }
   }-*/;
 
   public final native void setShowListener(StringBiConsumer consumer) /*-{
     this.when.show = function (e) {
-      var pId = e.previous != null ? e.previous.id : '';
-      var cId = e.step != null ? e.step.id : '';
-      consumer.@org.vaadin.addons.producttour.client.util.StringBiConsumer::accept(*)(pId, cId);
+      $entry(function (e) {
+        var pId = e.previous != null ? e.previous.id : '';
+        var cId = e.step != null ? e.step.id : '';
+        consumer.@org.vaadin.addons.producttour.client.util.StringBiConsumer::accept(*)(pId, cId);
+      })(e);
     }
   }-*/;
 
   public final native void setStartListener(Command command) /*-{
     this.when.start = function () {
-      command.@org.vaadin.addons.producttour.client.util.Command::execute()();
+      $entry(function () {
+        command.@org.vaadin.addons.producttour.client.util.Command::execute()()
+      })();
     }
   }-*/;
 }

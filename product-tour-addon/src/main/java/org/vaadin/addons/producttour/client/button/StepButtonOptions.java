@@ -24,12 +24,16 @@ public class StepButtonOptions extends JavaScriptObject {
     this.buttonEnabled = enabled;
   }-*/;
 
+  // @formatter:off
   public final native void setClickListener(MouseEventDetailsConsumer consumer)/*-{
     this.events = {
       'click': function (e) {
-        var mouseEventDetails = @com.vaadin.client.MouseEventDetailsBuilder::buildMouseEventDetails(Lcom/google/gwt/dom/client/NativeEvent;Lcom/google/gwt/dom/client/Element;)(e, e.target);
-        consumer.@org.vaadin.addons.producttour.client.util.MouseEventDetailsConsumer::accept(*)(mouseEventDetails);
+        $entry(function (e) {
+          var mouseEventDetails = @com.vaadin.client.MouseEventDetailsBuilder::buildMouseEventDetails(Lcom/google/gwt/dom/client/NativeEvent;Lcom/google/gwt/dom/client/Element;)(e, e.target);
+          consumer.@org.vaadin.addons.producttour.client.util.MouseEventDetailsConsumer::accept(*)(mouseEventDetails);
+        })(e);
       }
     };
   }-*/;
+  // @formatter:on
 }
