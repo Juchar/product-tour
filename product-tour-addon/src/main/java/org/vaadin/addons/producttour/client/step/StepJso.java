@@ -43,4 +43,8 @@ public class StepJso extends JavaScriptObject implements Serializable {
   public native final void scrollTo() /*-{
     this.scrollTo();
   }-*/;
+
+  public native final void destroy() /*-{
+    this.destroy();
+  }-*/;
 }

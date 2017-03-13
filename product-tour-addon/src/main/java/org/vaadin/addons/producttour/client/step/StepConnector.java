@@ -17,15 +17,39 @@ import org.vaadin.addons.producttour.shared.step.StepState;
 import org.vaadin.addons.producttour.step.Step;
 
 @Connect(Step.class)
-public class StepConnector extends AbstractExtensionConnector implements StepClientRpc {
+public class StepConnector extends AbstractExtensionConnector {
 
   private StepJso stepJso;
-  private StepServerRpc rpcProxy;
+  private final StepClientRpc clientRpc = new StepClientRpc() {
+    @Override
+    public void cancel() {
+      stepJso.cancel();
+    }
+
+    @Override
+    public void complete() {
+      stepJso.complete();
+    }
+
+    @Override
+    public void hide() {
+      stepJso.hide();
+    }
+
+    @Override
+    public void show() {
+      stepJso.show();
+    }
+
+    @Override
+    public void scrollTo() {
+      stepJso.scrollTo();
+    }
+  };
 
   @Override
   protected void extend(ServerConnector target) {
-    registerRpc(StepClientRpc.class, this);
-    rpcProxy = getRpcProxy(StepServerRpc.class);
+    registerRpc(StepClientRpc.class, clientRpc);
   }
 
   public void setStepJso(StepJso stepJso) {
@@ -62,25 +86,25 @@ public class StepConnector extends AbstractExtensionConnector implements StepCli
     options.setCancelListener(new Command() {
       @Override
       public void execute() {
-        rpcProxy.onCancel();
+        getRpcProxy(StepServerRpc.class).onCancel();
       }
     });
     options.setCompleteListener(new Command() {
       @Override
       public void execute() {
-        rpcProxy.onComplete();
+        getRpcProxy(StepServerRpc.class).onComplete();
       }
     });
     options.setHideListener(new Command() {
       @Override
       public void execute() {
-        rpcProxy.onHide();
+        getRpcProxy(StepServerRpc.class).onHide();
       }
     });
     options.setShowListener(new Command() {
       @Override
       public void execute() {
-        rpcProxy.onShow();
+        getRpcProxy(StepServerRpc.class).onShow();
       }
     });
 
@@ -100,32 +124,13 @@ public class StepConnector extends AbstractExtensionConnector implements StepCli
   }
 
   @Override
+  public void onUnregister() {
+    super.onUnregister();
+    stepJso.destroy();
+  }
+
+  @Override
   public StepState getState() {
     return (StepState) super.getState();
-  }
-
-  @Override
-  public void cancel() {
-    stepJso.cancel();
-  }
-
-  @Override
-  public void complete() {
-    stepJso.complete();
-  }
-
-  @Override
-  public void hide() {
-    stepJso.hide();
-  }
-
-  @Override
-  public void show() {
-    stepJso.show();
-  }
-
-  @Override
-  public void scrollTo() {
-    stepJso.scrollTo();
   }
 }

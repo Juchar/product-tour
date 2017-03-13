@@ -19,27 +19,51 @@ import org.vaadin.addons.producttour.shared.tour.TourServerRpc;
 import org.vaadin.addons.producttour.shared.tour.TourState;
 import org.vaadin.addons.producttour.tour.Tour;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
 @Connect(Tour.class)
-public class TourConnector extends AbstractExtensionConnector implements TourClientRpc {
-
-  private final List<StepConnector> steps;
+public class TourConnector extends AbstractExtensionConnector {
 
   private TourJso tourJso;
-  private TourServerRpc rpcProxy;
+  private final TourClientRpc clientRpc = new TourClientRpc() {
+    @Override
+    public void cancel() {
+      tourJso.cancel();
+    }
 
-  public TourConnector() {
-    steps = new LinkedList<StepConnector>();
-  }
+    @Override
+    public void hide() {
+      tourJso.hide();
+    }
+
+    @Override
+    public void show(String stepId) {
+      tourJso.show(stepId);
+    }
+
+    @Override
+    public void start() {
+      tourJso.start();
+    }
+
+    @Override
+    public void back() {
+      tourJso.back();
+    }
+
+    @Override
+    public void next() {
+      tourJso.next();
+    }
+  };
 
   @Override
   protected void extend(ServerConnector target) {
-    registerRpc(TourClientRpc.class, this);
-    rpcProxy = getRpcProxy(TourServerRpc.class);
-
+    registerRpc(TourClientRpc.class, clientRpc);
     tourJso = createTour(getOptions());
   }
 
@@ -86,64 +110,34 @@ public class TourConnector extends AbstractExtensionConnector implements TourCli
     options.setCancelListener(new Command() {
       @Override
       public void execute() {
-        rpcProxy.onCancel();
+        getRpcProxy(TourServerRpc.class).onCancel();
       }
     });
     options.setCompleteListener(new Command() {
       @Override
       public void execute() {
-        rpcProxy.onComplete();
+        getRpcProxy(TourServerRpc.class).onComplete();
       }
     });
     options.setHideListener(new Command() {
       @Override
       public void execute() {
-        rpcProxy.onHide();
+        getRpcProxy(TourServerRpc.class).onHide();
       }
     });
     options.setShowListener(new StringBiConsumer() {
       @Override
       public void accept(String s, String s2) {
-        rpcProxy.onShow(s, s2);
+        getRpcProxy(TourServerRpc.class).onShow(s, s2);
       }
     });
     options.setStartListener(new Command() {
       @Override
       public void execute() {
-        rpcProxy.onStart();
+        getRpcProxy(TourServerRpc.class).onStart();
       }
     });
     return options;
-  }
-
-  @Override
-  public void cancel() {
-    tourJso.cancel();
-  }
-
-  @Override
-  public void hide() {
-    tourJso.hide();
-  }
-
-  @Override
-  public void show(String stepId) {
-    tourJso.show(stepId);
-  }
-
-  @Override
-  public void start() {
-    tourJso.start();
-  }
-
-  @Override
-  public void back() {
-    tourJso.back();
-  }
-
-  @Override
-  public void next() {
-    tourJso.next();
   }
 
   @OnStateChange("steps")
@@ -153,9 +147,9 @@ public class TourConnector extends AbstractExtensionConnector implements TourCli
       addStep(step);
     }
 
-    List<StepConnector> removedSteps = getRemovedSteps();
-    for (StepConnector step : removedSteps) {
-      removeStep(step);
+    List<String> stepIdsToRemove = getStepIdsToRemove();
+    for (String stepId : stepIdsToRemove) {
+      removeStep(stepId);
     }
   }
 
@@ -163,9 +157,18 @@ public class TourConnector extends AbstractExtensionConnector implements TourCli
     List<StepConnector> addedSteps = new LinkedList<StepConnector>();
 
     List<Connector> stateSteps = getState().steps;
+    List<StepJso> currentSteps = new LinkedList<StepJso>(Arrays.asList(tourJso.getSteps()));
+
     for (Connector stateStep : stateSteps) {
-      if (!steps.contains(stateStep)) {
-        addedSteps.add((StepConnector) stateStep);
+      boolean found = false;
+      for (StepJso existingStep : currentSteps) {
+        if (existingStep.getId().equals(((StepConnector) stateStep).getStepId())) {
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        addedSteps.add(((StepConnector) stateStep));
       }
     }
 
@@ -175,26 +178,32 @@ public class TourConnector extends AbstractExtensionConnector implements TourCli
   private void addStep(StepConnector stepConnector) {
     StepJso stepJso = tourJso.addStep(stepConnector.getStepId(), stepConnector.getOptions());
     stepConnector.setStepJso(stepJso);
-    steps.add(stepConnector);
   }
 
-  private List<StepConnector> getRemovedSteps() {
-    List<StepConnector> removedSteps = new LinkedList<StepConnector>();
+  private List<String> getStepIdsToRemove() {
+    List<String> removedSteps = new ArrayList<String>();
 
     List<Connector> stateSteps = getState().steps;
-    for (StepConnector step : steps) {
-      if (!stateSteps.contains(step)) {
-        removedSteps.add(step);
+    List<StepJso> currentSteps = new LinkedList<StepJso>(Arrays.asList(tourJso.getSteps()));
+
+    for (StepJso existingStep : currentSteps) {
+      boolean found = false;
+      for (Connector stateStep : stateSteps) {
+        if (existingStep.getId().equals(((StepConnector) stateStep).getStepId())) {
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        removedSteps.add(existingStep.getId());
       }
     }
 
     return removedSteps;
   }
 
-  private void removeStep(StepConnector stepConnector) {
-    tourJso.removeStep(stepConnector.getStepId());
-    stepConnector.setStepJso(null);
-    steps.remove(stepConnector);
+  private void removeStep(String stepId) {
+    tourJso.removeStep(stepId);
   }
 
   @OnStateChange("currentStep")
@@ -221,7 +230,6 @@ public class TourConnector extends AbstractExtensionConnector implements TourCli
   public void onUnregister() {
     super.onUnregister();
     tourJso.done();
-    steps.clear();
   }
 
   @Override

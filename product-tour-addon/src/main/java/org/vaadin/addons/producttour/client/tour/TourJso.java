@@ -28,6 +28,10 @@ public class TourJso extends JavaScriptObject implements Serializable {
     return this.currentStep;
   }-*/;
 
+  public native final StepJso[] getSteps() /*-{
+    return this.steps;
+  }-*/;
+
   public native final void start() /*-{
     this.start();
   }-*/;
