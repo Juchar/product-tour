@@ -240,7 +240,16 @@ public class StepButton extends AbstractExtension {
    *     The step the button should be added to
    */
   public void setStep(Step step) {
+    if (this.step != null) {
+      this.step.getState().buttons.remove(this);
+      remove();
+    }
+
+    if (step != null) {
+      extend(step);
+      step.getState().buttons.add(this);
+    }
+
     this.step = step;
-    extend(step);
   }
 }

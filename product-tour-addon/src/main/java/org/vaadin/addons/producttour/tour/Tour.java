@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * A tour consisting of one or multiple steps.
@@ -23,7 +24,6 @@ import java.util.Objects;
 @JavaScript({"vaadin://addons/producttour/js/producttour.js"})
 public class Tour extends AbstractExtension {
 
-  private final List<Step> steps;
   private final TourServerRpc serverRpc = new TourServerRpc() {
     @Override
     public void onCancel() {
@@ -63,7 +63,6 @@ public class Tour extends AbstractExtension {
    * Construct a new tour.
    */
   public Tour() {
-    this.steps = new LinkedList<>();
     registerRpc(serverRpc);
 
     extend(UI.getCurrent());
@@ -91,18 +90,6 @@ public class Tour extends AbstractExtension {
    */
   public void addStep(Step step) {
     step.setTour(this);
-    getState().steps.add(step);
-    steps.add(step);
-  }
-
-  @Override
-  public TourState getState() {
-    return (TourState) super.getState();
-  }
-
-  @Override
-  protected TourState getState(boolean markAsDirty) {
-    return (TourState) super.getState(markAsDirty);
   }
 
   /**
@@ -112,9 +99,7 @@ public class Tour extends AbstractExtension {
    *     The step to be removed
    */
   public void removeStep(Step step) {
-    steps.remove(step);
-    getState().steps.remove(step);
-    step.remove();
+    step.setTour(null);
   }
 
   /**
@@ -135,16 +120,7 @@ public class Tour extends AbstractExtension {
    * @return The step at the given index
    */
   public Step getStepByIndex(int index) {
-    return steps.get(index);
-  }
-
-  /**
-   * Get the count of steps for this tour.
-   *
-   * @return The count of steps
-   */
-  public int getStepCount() {
-    return steps.size();
+    return getSteps().get(index);
   }
 
   /**
@@ -153,7 +129,29 @@ public class Tour extends AbstractExtension {
    * @return The steps of the tour inside an unmodifiable container
    */
   public List<Step> getSteps() {
-    return Collections.unmodifiableList(steps);
+    return Collections.unmodifiableList(getState().steps
+                                            .stream()
+                                            .map(c -> (Step) c)
+                                            .collect(Collectors.toCollection(LinkedList::new)));
+  }
+
+  @Override
+  public TourState getState() {
+    return (TourState) super.getState();
+  }
+
+  @Override
+  protected TourState getState(boolean markAsDirty) {
+    return (TourState) super.getState(markAsDirty);
+  }
+
+  /**
+   * Get the count of steps for this tour.
+   *
+   * @return The count of steps
+   */
+  public int getStepCount() {
+    return getSteps().size();
   }
 
   /**
@@ -191,10 +189,10 @@ public class Tour extends AbstractExtension {
    * this tour
    */
   public Step getStepById(String stepId) {
-    return steps.stream()
-                .filter(s -> Objects.equals(s.getId(), stepId))
-                .findFirst()
-                .orElse(null);
+    return getSteps().stream()
+                     .filter(s -> Objects.equals(s.getId(), stepId))
+                     .findFirst()
+                     .orElse(null);
   }
 
   /**

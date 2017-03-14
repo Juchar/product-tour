@@ -18,6 +18,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * A single step of a tour.
@@ -28,7 +29,6 @@ public class Step extends AbstractExtension implements Sizeable {
 
   private static final StepAnchor DEFAULT_ANCHOR = StepAnchor.RIGHT;
 
-  private final List<StepButton> buttons;
   private final StepServerRpc serverRpc = new StepServerRpc() {
     @Override
     public void onCancel() {
@@ -103,7 +103,6 @@ public class Step extends AbstractExtension implements Sizeable {
    *     The anchor of the step relative to the given component
    */
   public Step(String id, AbstractComponent attachTo, StepAnchor anchor) {
-    this.buttons = new LinkedList<>();
     registerRpc(serverRpc);
 
     setId(id);
@@ -279,8 +278,17 @@ public class Step extends AbstractExtension implements Sizeable {
    *     The tour the step should be added to
    */
   public void setTour(Tour tour) {
+    if (this.tour != null) {
+      this.tour.getState().steps.remove(this);
+      remove();
+    }
+
+    if (tour != null) {
+      extend(tour);
+      tour.getState().steps.add(this);
+    }
+
     this.tour = tour;
-    extend(tour);
   }
 
   /**
@@ -496,8 +504,6 @@ public class Step extends AbstractExtension implements Sizeable {
    */
   public void addButton(StepButton button) {
     button.setStep(this);
-    getState().buttons.add(button);
-    buttons.add(button);
   }
 
   /**
@@ -507,9 +513,7 @@ public class Step extends AbstractExtension implements Sizeable {
    *     The button to be removed
    */
   public void removeButton(StepButton button) {
-    buttons.remove(button);
-    getState().buttons.remove(button);
-    button.remove();
+    button.setStep(null);
   }
 
   /**
@@ -521,16 +525,7 @@ public class Step extends AbstractExtension implements Sizeable {
    * @return The button at the given index
    */
   public StepButton getButtonByIndex(int index) {
-    return buttons.get(index);
-  }
-
-  /**
-   * Get the count of buttons of this step.
-   *
-   * @return The count of buttons of this step
-   */
-  public int getButtonCount() {
-    return buttons.size();
+    return getButtons().get(index);
   }
 
   /**
@@ -539,7 +534,19 @@ public class Step extends AbstractExtension implements Sizeable {
    * @return The buttons of the step inside an unmodifiable container
    */
   public List<StepButton> getButtons() {
-    return Collections.unmodifiableList(buttons);
+    return Collections.unmodifiableList(getState().buttons
+                                            .stream()
+                                            .map(c -> (StepButton) c)
+                                            .collect(Collectors.toCollection(LinkedList::new)));
+  }
+
+  /**
+   * Get the count of buttons of this step.
+   *
+   * @return The count of buttons of this step
+   */
+  public int getButtonCount() {
+    return getButtons().size();
   }
 
   /**
