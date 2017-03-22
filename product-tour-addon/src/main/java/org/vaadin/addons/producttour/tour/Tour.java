@@ -10,7 +10,6 @@ import org.vaadin.addons.producttour.shared.tour.TourServerRpc;
 import org.vaadin.addons.producttour.shared.tour.TourState;
 import org.vaadin.addons.producttour.step.Step;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -126,13 +125,12 @@ public class Tour extends AbstractExtension {
   /**
    * Get the steps of the tour.
    *
-   * @return The steps of the tour inside an unmodifiable container
+   * @return Copy of the list containing the steps of the tour
    */
   public List<Step> getSteps() {
-    return Collections.unmodifiableList(getState().steps
-                                            .stream()
-                                            .map(c -> (Step) c)
-                                            .collect(Collectors.toCollection(LinkedList::new)));
+    return getState().steps.stream()
+                           .map(c -> (Step) c)
+                           .collect(Collectors.toCollection(LinkedList::new));
   }
 
   @Override

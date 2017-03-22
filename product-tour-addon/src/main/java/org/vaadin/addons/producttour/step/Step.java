@@ -14,7 +14,6 @@ import org.vaadin.addons.producttour.shared.step.StepServerRpc;
 import org.vaadin.addons.producttour.shared.step.StepState;
 import org.vaadin.addons.producttour.tour.Tour;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
@@ -531,13 +530,13 @@ public class Step extends AbstractExtension implements Sizeable {
   /**
    * Get the buttons of the step.
    *
-   * @return The buttons of the step inside an unmodifiable container
+   * @return Copy of the list containing the buttons of the step
    */
   public List<StepButton> getButtons() {
-    return Collections.unmodifiableList(getState().buttons
-                                            .stream()
-                                            .map(c -> (StepButton) c)
-                                            .collect(Collectors.toCollection(LinkedList::new)));
+    return getState().buttons
+               .stream()
+               .map(c -> (StepButton) c)
+               .collect(Collectors.toCollection(LinkedList::new));
   }
 
   /**
