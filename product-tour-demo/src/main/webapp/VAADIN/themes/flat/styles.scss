@@ -25,4 +25,5 @@ $valo-menu-background-color: #eee;
 
 .flat {
   @include valo;
+  @include addons;
 }

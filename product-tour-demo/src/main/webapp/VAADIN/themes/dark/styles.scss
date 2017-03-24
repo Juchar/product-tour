@@ -21,4 +21,5 @@ $v-component-group-spacing: 6px;
 
 .dark {
   @include valo;
+  @include addons;
 }
