@@ -18,4 +18,5 @@ $v-error-indicator-color: hsl(349, 66%, 56%);
 
 .light {
   @include valo;
+  @include addons;
 }

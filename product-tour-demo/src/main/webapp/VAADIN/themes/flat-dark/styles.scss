@@ -22,4 +22,5 @@ $v-font-weight--header: 600;
 
 .flat-dark {
   @include valo;
+  @include addons;
 }
