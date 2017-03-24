@@ -22,4 +22,5 @@ $v-font-size: 18px;
 
 .blueprint {
   @include valo;
+  @include addons;
 }

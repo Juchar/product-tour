@@ -1,11 +1,11 @@
 /* This file is automatically managed and will be overwritten from time to time. */
 /* Do not manually edit this file. */
-/* Provided by product-tour-0.3-SNAPSHOT.jar */
-@import "../../../VAADIN/addons/producttour/scss/tour.scss";
+/* Provided by product-tour-0.4-SNAPSHOT.jar */
+@import "../../../VAADIN/addons/producttour/scss/product-tour.scss";
 
 
 /* Import and include this mixin into your project theme to include the addon themes */
 @mixin addons {
-	@include tour;
+  @include product-tour;
 }
 

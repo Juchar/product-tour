@@ -26,4 +26,5 @@ $v-selection-item-border-radius: 0;
 
 .facebook {
   @include valo;
+  @include addons;
 }
