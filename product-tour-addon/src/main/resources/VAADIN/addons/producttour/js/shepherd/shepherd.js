@@ -13,23 +13,27 @@ let Shepherd = new Evented;
 
 function getVaadinOverlayContainer() {
   return document.getElementsByClassName('v-app v-overlay-container')[0];
-};
+}
+
+function getVaadinRootAppContainer() {
+  return document.getElementsByClassName('v-app')[0];
+}
 
 function isUndefined(obj) {
   return typeof obj === 'undefined'
-};
+}
 
 function isArray(obj) {
   return Object.prototype.toString.call(obj) === '[object Array]';
-};
+}
 
 function isObject(obj) {
   return Object.prototype.toString.call(obj) === '[object Object]';
-};
+}
 
 function isObjectLoose(obj) {
   return typeof obj === 'object';
-};
+}
 
 const ATTACHMENT = {
   'top right': 'bottom left',
@@ -73,7 +77,7 @@ function matchesSelector(el, sel) {
   return matches.call(el, sel);
 }
 
-const positionRe = /^(.+) (top|left|right|bottom|center|\[[a-z ]+\])$/
+const positionRe = /^(.+) (top|left|right|bottom|center|\[[a-z ]+\])$/;
 
 function parsePosition(str) {
   if (isObjectLoose(str)) {
@@ -299,7 +303,7 @@ class Step extends Evented {
 
     addClass(this.el, 'shepherd-open');
     if (this.options.modal) {
-      addClass(document.body, 'shepherd-modal');
+      addClass(getVaadinRootAppContainer(), 'shepherd-modal');
     }
 
     getVaadinOverlayContainer().setAttribute('data-shepherd-step', this.id);
@@ -320,7 +324,7 @@ class Step extends Evented {
     this.trigger('before-hide');
 
     removeClass(this.el, 'shepherd-open');
-    removeClass(document.body, 'shepherd-modal');
+    removeClass(getVaadinRootAppContainer(), 'shepherd-modal');
 
     getVaadinOverlayContainer().removeAttribute('data-shepherd-step');
 
@@ -637,7 +641,7 @@ class Tour extends Evented {
 
   done() {
     Shepherd.activeTour = null;
-    removeClass(document.body, 'shepherd-active');
+    removeClass(getVaadinRootAppContainer(), 'shepherd-active');
     this.trigger('inactive', {tour: this});
   }
 
@@ -645,7 +649,7 @@ class Tour extends Evented {
     if (this.currentStep && this.currentStep.isOpen()) {
       this.currentStep.hide();
     } else {
-      addClass(document.body, 'shepherd-active');
+      addClass(getVaadinRootAppContainer(), 'shepherd-active');
       this.trigger('active', {tour: this});
     }
 
