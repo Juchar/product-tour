@@ -13,7 +13,7 @@ The addon is based on [Shepherd](http://github.hubspot.com/shepherd/), a JavaScr
 
 ## Online demo
 
-Try the add-on demo at <url of the online demo>
+Try the add-on demo at https://product-tour-demo.herokuapp.com/
 
 ## Download release
 
